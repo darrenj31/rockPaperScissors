@@ -1,6 +1,13 @@
 
 const buttons = document.querySelectorAll("button");
-console.log(buttons);
+const result = document.getElementById("result");
+let roundResult;
+const playerScoreText = document.getElementById("playerScore");
+const compScoreText = document.getElementById("computerScore");
+let playerScore = 0;
+let computerScore = 0;
+const gameResultDiv = document.getElementById("gameResult");
+
 
 function playRoundFunc(e){
     console.log(e.target.textContent);
@@ -8,6 +15,8 @@ function playRoundFunc(e){
 }
 
 buttons.forEach((button) => button.addEventListener('click', playRoundFunc));
+
+
 
 
 function getComputerChoice(){
@@ -23,17 +32,38 @@ function getComputerChoice(){
 
 function playRound(playerSelection, computerSelection){
     const psLowCase = playerSelection.toLowerCase();
-
+    let resultText = "";
     if (psLowCase == computerSelection.toLowerCase()){
-        console.log("Tie!");
-        return 2;
+        resultText = "Tie!";
+        // return 2;
     } else if ((psLowCase == "scissors" && computerSelection == "Paper") || (psLowCase == "rock" && computerSelection == "Scissors") || (psLowCase == "paper" && computerSelection == "Paper")){
-        console.log( `${"You win! "}${psLowCase.charAt(0).toUpperCase()}${psLowCase.slice(1)}${" beats "}${computerSelection}`);
-        return 1;
+        resultText = `${"You win! "}${psLowCase.charAt(0).toUpperCase()}${psLowCase.slice(1)}${" beats "}${computerSelection}`;
+        playerScore++;
+        if (playerScore == 5){
+            displayGameWinner("Your name");
+        }
+        // return 1; 
     } else {
-        console.log( `${"You lose! "}${computerSelection}${" beats "}${psLowCase.charAt(0).toUpperCase()}${psLowCase.slice(1)}`);
-        return 0;
+        resultText = `${"You lose! "}${computerSelection}${" beats "}${psLowCase.charAt(0).toUpperCase()}${psLowCase.slice(1)}`;
+        computerScore++;
+        if (computerScore == 5){
+            displayGameWinner("Computer");
+        }
+        // return 0;
     }
+    if (!roundResult){
+        roundResult = document.createElement('p');
+    }
+    roundResult.textContent = resultText;
+    playerScoreText.textContent = "Your score: " + playerScore;
+    compScoreText.textContent = "Computer score: " + computerScore;
+    result.appendChild(roundResult);
+}
+
+function displayGameWinner(winner){
+    gameResult = document.createElement('p');
+    gameResult.textContent = "Game winner: " + winner;
+    gameResultDiv.appendChild(gameResult);
 }
 
 // function game(){
